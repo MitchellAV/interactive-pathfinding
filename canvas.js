@@ -25,7 +25,7 @@ document.oncontextmenu = function () {
 function combo() {
 	init();
 	addWalls();
-	solve();
+	solve(true);
 }
 
 // Functions
@@ -68,7 +68,7 @@ function init() {
 	}
 }
 
-async function solve() {
+async function solve(isAnimated) {
 	reset();
 	for (let i = 0; i < grid.length; i++) {
 		for (let j = 0; j < grid[i].length; j++) {
@@ -77,7 +77,8 @@ async function solve() {
 			grid[i][j].f = Infinity;
 		}
 	}
-	let finished = await astar();
+
+	let finished = await genPath(isAnimated);
 	if (!finished) {
 		drawGrid();
 		// alert("No Path");

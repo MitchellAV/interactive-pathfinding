@@ -3,6 +3,7 @@ let prevMouse = {
 	y: null
 };
 let down = false;
+let isAnimated = true;
 
 // Event Listeners
 addEventListener("resize", function () {
@@ -69,7 +70,8 @@ addEventListener("mousemove", function (evt) {
 				endNode.end = false;
 				endNode = grid[mouse.x][mouse.y];
 				endNode.end = true;
-				solve();
+
+				solve(false);
 			}
 		}
 	} catch (error) {}

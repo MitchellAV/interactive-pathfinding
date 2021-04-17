@@ -1,4 +1,4 @@
-async function astar() {
+async function genPath(isAnimated) {
 	// let startTime = new Date().getTime();
 	console.time("A*");
 	let alg = getRadioVal(document.getElementById("algForm"), "alg");
@@ -95,8 +95,10 @@ async function astar() {
 		// minHeap.printHeap();
 		openSet = minHeap.heap;
 		// reset();
-		await sleep(10);
-		drawGrid();
+		if (isAnimated) {
+			await sleep(10);
+			drawGrid();
+		}
 	}
 	// let endTime = new Date().getTime();
 	console.timeEnd("A*");
@@ -119,10 +121,4 @@ function removeNode(array, node) {
 	if (index != -1) {
 		array.splice(index, 1);
 	}
-}
-
-function dijsktra() {
-	console.time("A*");
-	let open = [];
-	let closed = [];
 }
