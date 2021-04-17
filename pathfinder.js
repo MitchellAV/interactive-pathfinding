@@ -1,4 +1,4 @@
-function astar() {
+async function astar() {
 	// let startTime = new Date().getTime();
 	console.time("A*");
 	let alg = getRadioVal(document.getElementById("algForm"), "alg");
@@ -47,59 +47,69 @@ function astar() {
 		for (let i = 0; i < currentNode.neighbors.length; i++) {
 			let neighbor = currentNode.neighbors[i];
 			// if (!closedSet.includes(neighbor)) {
-			if (alg == "bfs") {
-				let tempH = dist(currentNode, neighbor);
-				if (tempH < neighbor.h) {
-					neighbor.parent = currentNode;
+			// if (alg == "bfs") {
+			// 	let tempH = dist(currentNode, neighbor);
+			// 	if (tempH < neighbor.h) {
+			// 		neighbor.parent = currentNode;
+			// 		neighbor.g = 0;
+
+			// 		neighbor.h = dist(currentNode, endNode);
+
+			// 		neighbor.f = neighbor.g + neighbor.h;
+			// 		if (!minHeap.heap.includes(neighbor)) {
+			// 			minHeap.insert(neighbor);
+			// 		}
+			// 		// if (!openSet.includes(neighbor)) {
+			// 		//     openSet.push(neighbor);
+			// 		// }
+			// 	}
+			// } else {
+			let tempG = currentNode.g + dist(currentNode, neighbor);
+
+			if (tempG < neighbor.g && !closedSet.includes(neighbor)) {
+				neighbor.parent = currentNode;
+				if (alg == "bfs") {
 					neighbor.g = 0;
-
-					neighbor.h = tempH;
-
-					neighbor.f = neighbor.g + neighbor.h;
-					if (!minHeap.heap.includes(neighbor)) {
-						minHeap.insert(neighbor);
-					}
-					// if (!openSet.includes(neighbor)) {
-					//     openSet.push(neighbor);
-					// }
-				}
-			} else {
-				let tempG = currentNode.g + dist(currentNode, neighbor);
-
-				if (tempG < neighbor.g) {
-					neighbor.parent = currentNode;
+				} else {
 					neighbor.g = tempG;
-
-					if (alg == "astar") {
-						neighbor.h = dist(neighbor, endNode);
-					} else if (alg == "dijkstra") {
-						neighbor.h = 0;
-					}
-
-					neighbor.f = neighbor.g + neighbor.h;
-					if (!minHeap.heap.includes(neighbor)) {
-						minHeap.insert(neighbor);
-					}
-					// if (!openSet.includes(neighbor)) {
-					//     openSet.push(neighbor);
-					// }
 				}
+
+				if (alg == "astar" || alg == "bfs") {
+					neighbor.h = dist(neighbor, endNode);
+				} else if (alg == "dijkstra") {
+					neighbor.h = 0;
+				}
+
+				neighbor.f = neighbor.g + neighbor.h;
+				if (!minHeap.heap.includes(neighbor)) {
+					minHeap.insert(neighbor);
+				}
+				// if (!openSet.includes(neighbor)) {
+				//     openSet.push(neighbor);
+				// }
 			}
+			// }
 
 			// }
 		}
-		// drawGrid();
+		// minHeap.printHeap();
+		openSet = minHeap.heap;
+		// reset();
+		await sleep(10);
+		drawGrid();
 	}
 	// let endTime = new Date().getTime();
 	console.timeEnd("A*");
-	openSet = minHeap.heap;
 	return finished;
 }
 
+function sleep(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
 function dist(startNode, endNode) {
-	return Math.sqrt(
+	return (
 		Math.pow(startNode.x - endNode.x, 2) +
-			Math.pow(startNode.y - endNode.y, 2)
+		Math.pow(startNode.y - endNode.y, 2)
 	);
 	// return Math.abs(startNode.x - endNode.x) + Math.abs(startNode.y - endNode.y);
 }

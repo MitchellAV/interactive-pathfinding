@@ -1,11 +1,11 @@
 let canvas, ctx, grid, side, startNode, endNode;
 
 let FRAMERATE = 1;
-let perWalls = 0.3;
-let ROWS = 50;
-let COLS = 50;
-let openColor = "rgb(255,0,0)";
-let closedColor = "rgb(0,255,0)";
+let perWalls = 0.25;
+let ROWS = 30;
+let COLS = 30;
+let openColor = "rgb(0,255,0)";
+let closedColor = "rgb(255,0,0)";
 let pathColor = "rgb(0,0,255)";
 let wallColor = "rgb(0,0,0)";
 let startColor = "rgb(0,0,255)";
@@ -68,7 +68,7 @@ function init() {
 	}
 }
 
-function solve() {
+async function solve() {
 	reset();
 	for (let i = 0; i < grid.length; i++) {
 		for (let j = 0; j < grid[i].length; j++) {
@@ -77,7 +77,7 @@ function solve() {
 			grid[i][j].f = Infinity;
 		}
 	}
-	let finished = astar();
+	let finished = await astar();
 	if (!finished) {
 		drawGrid();
 		// alert("No Path");
