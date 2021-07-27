@@ -1,91 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>A* Graph</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
     <script src="cell.js"></script>
     <script src="minHeap.js"></script>
     <script src="pathfinder.js"></script>
     <script src="events.js"></script>
     <script src="canvas.js"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body class='content' onload="init();">
+  <body class="content" onload="init();">
     <canvas id="canvas"></canvas>
-    <main class='wrapper'>
-        <div class="info">
-            <h1 class="title">Pathfinding Algorithms</h1>
-            <div class="controls">
-                <h4 class="heading">Controls:</h4>
-                <div class="control-wrapper">
-                    <p class="key">Left Click:</p>
-                    <p class="action">Change Starting Node</p>
-                </div>
-                <div class="control-wrapper">
-                    <p class="key">Ctrl + Left Click:</p>
-                    <p class="action">Change Ending Node</p>
-                </div>
-                <div class="control-wrapper">
-                    <p class="key">Right Click:</p>
-                    <p class="action">Build Walls</p>
-                </div>
-                <div class="control-wrapper">
-                    <p class="key">Ctrl + Right Click:</p>
-                    <p class="action">Destroy Walls</p>
-                </div>
-                <div class="control-wrapper">
-                    <p class="key">Alt + Hover:</p>
-                    <p class="action">Live-Solve</p>
-                </div>
-            </div>
+    <main class="wrapper">
+      <div class="info">
+        <h1 class="title">Pathfinding Algorithms</h1>
+        <div class="controls">
+          <h4 class="heading">Controls:</h4>
+          <div class="control-wrapper">
+            <p class="key">Left Click:</p>
+            <p class="action">Change Starting Node</p>
+          </div>
+          <div class="control-wrapper">
+            <p class="key">Ctrl + Left Click:</p>
+            <p class="action">Change Ending Node</p>
+          </div>
+          <div class="control-wrapper">
+            <p class="key">Right Click:</p>
+            <p class="action">Build Walls</p>
+          </div>
+          <div class="control-wrapper">
+            <p class="key">Ctrl + Right Click:</p>
+            <p class="action">Destroy Walls</p>
+          </div>
+          <div class="control-wrapper">
+            <p class="key">Alt + Hover:</p>
+            <p class="action">Live-Solve</p>
+          </div>
         </div>
-        <section class="options">
-            <div class="options-wrapper">
-                <form id="algForm">
-                    <h4 class="heading">Algorithms:</h4>
-                    <div class="alg-choice">
-                        <div class="alg-option">
-                            <input type="radio" id="bfs" name="alg" value="bfs" checked>
-                            <label for="bfs">Best-First Search</label>
-                        </div>
-                        <div class="alg-option">
-                            <input type="radio" id="astar" name="alg" value="astar" checked>
-                            <label for="astar">A*</label>
-                        </div>
-                        <div class="alg-option">
-                            <input type="radio" id="dijkstra" name="alg" value="dijkstra">
-                            <label for="dijkstra">Dijkstra</label>
-                        </div>
-                    </div>
-                </form>
-                <form id="cornerForm">
-                    <h4 class="heading">Neighbors:</h4>
-                    <div>
-                        <div class="alg-option">
-                            <input type="radio" id="nocorners" name="corner" value="nocorners" checked>
-                            <label for="nocorners">No Diagonals</label>
-                        </div>
-                        <div class="alg-option">
-                            <input type="radio" id="corners" name="corner" value="corners">
-                            <label for="corners">Diagonals</label>
-                        </div>
-                    </div>
-                </form>
+      </div>
+      <section class="options">
+        <div class="options-wrapper">
+          <form id="algForm">
+            <h4 class="heading">Algorithms:</h4>
+            <div class="alg-choice">
+              <div class="alg-option">
+                <input type="radio" id="bfs" name="alg" value="bfs" checked />
+                <label for="bfs">Best-First Search</label>
+              </div>
+              <div class="alg-option">
+                <input
+                  type="radio"
+                  id="astar"
+                  name="alg"
+                  value="astar"
+                  checked
+                />
+                <label for="astar">A*</label>
+              </div>
+              <div class="alg-option">
+                <input type="radio" id="dijkstra" name="alg" value="dijkstra" />
+                <label for="dijkstra">Dijkstra</label>
+              </div>
             </div>
-            <div class="actions">
-                <button onclick="solve(true);">Solve Puzzle</button>
-                <button onclick="init();">Reset</button>
-                <button onclick="combo();">Reset and Solve</button>
-                <button onclick="addWalls();">Add Random Walls</button>
+          </form>
+          <form id="cornerForm">
+            <h4 class="heading">Neighbors:</h4>
+            <div>
+              <div class="alg-option">
+                <input
+                  type="radio"
+                  id="nocorners"
+                  name="corner"
+                  value="nocorners"
+                  checked
+                />
+                <label for="nocorners">No Diagonals</label>
+              </div>
+              <div class="alg-option">
+                <input
+                  type="radio"
+                  id="corners"
+                  name="corner"
+                  value="corners"
+                />
+                <label for="corners">Diagonals</label>
+              </div>
             </div>
-        </section>
+          </form>
+        </div>
+        <div class="actions">
+          <button class="btn-solve" onclick="solve(true);">Solve Puzzle</button>
+          <button onclick="init();">Reset</button>
+          <button onclick="addWalls();">Add Random Walls</button>
+          <button onclick="addMaze();">Generate Maze</button>
+        </div>
+      </section>
     </main>
-</body>
-
+  </body>
 </html>
